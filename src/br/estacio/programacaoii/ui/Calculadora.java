@@ -5,13 +5,16 @@
  */
 package br.estacio.programacaoii.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author aluno
  */
 public class Calculadora extends javax.swing.JFrame {
     
-    private int resultado;
+    private double resultado;
     /**
      * Creates new form Calculadora
      */
@@ -76,6 +79,11 @@ public class Calculadora extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         btn_divisao.setText("/");
+        btn_divisao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_divisaoActionPerformed(evt);
+            }
+        });
 
         btn_porc.setText("%");
         btn_porc.addActionListener(new java.awt.event.ActionListener() {
@@ -120,6 +128,11 @@ public class Calculadora extends javax.swing.JFrame {
         });
 
         btn_multiplicacao.setText("x");
+        btn_multiplicacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_multiplicacaoActionPerformed(evt);
+            }
+        });
 
         btn_quatro.setText("4");
         btn_quatro.addActionListener(new java.awt.event.ActionListener() {
@@ -143,6 +156,11 @@ public class Calculadora extends javax.swing.JFrame {
         });
 
         btn_ponto.setText(".");
+        btn_ponto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_pontoActionPerformed(evt);
+            }
+        });
 
         btn_um.setText("1");
         btn_um.addActionListener(new java.awt.event.ActionListener() {
@@ -166,12 +184,32 @@ public class Calculadora extends javax.swing.JFrame {
         });
 
         btn_mais.setText("+");
+        btn_mais.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_maisActionPerformed(evt);
+            }
+        });
 
         btn_zero.setText("0");
+        btn_zero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_zeroActionPerformed(evt);
+            }
+        });
 
         btn_virgula.setText(",");
+        btn_virgula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_virgulaActionPerformed(evt);
+            }
+        });
 
         btn_igual.setText("=");
+        btn_igual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_igualActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -332,14 +370,90 @@ public class Calculadora extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_noveActionPerformed
 
     private void btn_porcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_porcActionPerformed
-        String input = this.input_operacao.getText();
- 
-        input = input + "%";
-        
-        this.input_operacao.setText(input);
+        this.addValues("%");
         
     }//GEN-LAST:event_btn_porcActionPerformed
+
+    private void btn_divisaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_divisaoActionPerformed
+        this.addValues("/");
+    }//GEN-LAST:event_btn_divisaoActionPerformed
+
+    private void btn_multiplicacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_multiplicacaoActionPerformed
+        this.addValues("*");
+    }//GEN-LAST:event_btn_multiplicacaoActionPerformed
+
+    private void btn_pontoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pontoActionPerformed
+        this.addValues(".");
+    }//GEN-LAST:event_btn_pontoActionPerformed
+
+    private void btn_maisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_maisActionPerformed
+        this.addValues("+");
+    }//GEN-LAST:event_btn_maisActionPerformed
+
+    private void btn_igualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_igualActionPerformed
+        System.out.println(this.input_operacao.getText());
+    }//GEN-LAST:event_btn_igualActionPerformed
+
+    private void btn_virgulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_virgulaActionPerformed
+        this.addValues(",");
+    }//GEN-LAST:event_btn_virgulaActionPerformed
+
+    private void btn_zeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_zeroActionPerformed
+        this.addValues("0");
+    }//GEN-LAST:event_btn_zeroActionPerformed
     
+    private void calculo(){
+        List<Double> valores = new ArrayList<>();
+        List<Character> operadores = new ArrayList<>();
+        String formula = this.input_operacao.getText();
+        
+        for(int i=0; i<formula.length(); i++) {
+            if(this.isOperador(formula.charAt(i))){
+                operadores.add(formula.charAt(i));
+            }else{
+                valores.add(Double.parseDouble(String.valueOf(formula.charAt(i))));
+            }
+        }
+        Double resultado = 0.0;
+        for (int i=0; i<valores.size()-1; i++){
+            Double valor1 = valores.get(i);
+            if(i>0){
+                valor1 = resultado;
+            }
+            Double valor2 = valores.get(i+1);
+            Character operador = operadores.get(i);
+            resultado = this.calcular(valor1, valor2, operador);
+        }
+        this.input_operacao.setText(String.valueOf(resultado));
+    }
+    
+    private Double calcular(Double valor1, Double valor2, Character operacao){
+        Double resultado = 0.0;
+        
+        switch(operacao){
+            case '+':
+                resultado=valor1+valor2;
+                break;
+            case '-':
+                resultado=valor1-valor2;
+                break;
+            case '*':
+                resultado=valor1*valor2;
+                break;
+            case '/':
+                resultado=valor1/valor2;
+                break;
+        }
+        return resultado;
+    }
+            
+            
+    private boolean isOperador(char value){
+        if(value == '+' || value == '-' || value == '*' || value == '/'){
+            return true;
+        }
+        return false;
+    }
     private void addValues(String value){
         //pega o texto do campo
         String input = this.input_operacao.getText();
