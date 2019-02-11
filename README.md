@@ -6,7 +6,9 @@
 
 *Operações*
 
--Soma
--Subtração
--Multiplicação
--Divisão
+- Soma
+- Subtração
+- Multiplicação
+- Divisão
+
+Autor: jeniffer
